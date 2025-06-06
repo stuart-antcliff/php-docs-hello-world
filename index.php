@@ -58,7 +58,7 @@ if (isset($_GET['easting']) && isset($_GET['northing'])) {
 
     list($lat, $lon) = osgb36ToWgs84($easting, $northing);
 
-    $bingUrl = "https://www.bing.com/maps?rtp=pos.~pos.{$lat}_{$lon}";
+    $bingUrl = "https://www.bing.com/maps?rtp=pos.mypos~pos.{$lat}_{$lon}";
 
     echo "Latitude: $lat<br>";
     echo "Longitude: $lon<br>";
