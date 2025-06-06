@@ -69,7 +69,7 @@ if (isset($_GET['easting']) && isset($_GET['northing'])) {
     echo "Longitude: $lon<br>";
     echo "<a href='$bingUrl' target='_blank'>View on Bing Maps</a><br>";
     echo "<a href='$googleUrl' target='_blank'>View on Google Maps</a><br>";
-    echo "<a href='$wazeUrl' target='_blank'>View on Google Maps</a>";
+    echo "<a href='$wazeUrl' target='_blank'>View on Waze</a>";
 } else {
     echo "Please provide 'easting' and 'northing' parameters in the URL.";
 }
