@@ -1,19 +1,20 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    // Get the query string from the URL
-    $query_string = $_SERVER['QUERY_STRING'];
+// Get x and y from the URL query string
+if (isset($_GET['x']) && isset($_GET['y'])) {
+    $x = floatval($_GET['x']);
+    $y = floatval($_GET['y']);
 
-    // Parse the query string into an associative array
-    parse_str($query_string, $query_params);
+    // Convert Mercator X/Y to Longitude/Latitude
+    $longitude = rad2deg($x / 6378137);
+    $latitude = rad2deg(atan(sinh($y / 6378137)));
 
-    // Display the query parameters
-    echo '<h2>Query Parameters:</h2>';
-    echo '<ul>';
-    foreach ($query_params as $key => $value) {
-        echo '<li>' . htmlspecialchars($key) . ': ' . htmlspecialchars($value) . '</li>';
-    }
-    echo '</ul>';
+    // Build Bing Maps URL
+    $bingUrl = "https://www.bing.com/maps?q={$latitude},{$longitude}";
+
+    echo "Latitude: $latitude<br>";
+    echo "Longitude: $longitude<br>";
+    echo "<a href='$bingUrl' target='_blank'>View on Bing Maps</a>";
 } else {
-    echo 'Invalid request method.';
+    echo "Please provide 'x' and 'y' parameters in the URL.";
 }
 ?>
