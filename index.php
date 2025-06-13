@@ -61,6 +61,7 @@ if (isset($_GET['easting']) && isset($_GET['northing'])) {
     $bingUrl = "https://www.bing.com/maps?rtp=pos.mypos~pos.{$lat}_{$lon}";
     $googleUrl = "https://www.google.com/maps/dir/?api=1&origin=My+Location&destination={$lat},{$lon}";
     $wazeUrl = "https://waze.com/ul?ll={$lat},{$lon}&navigate=yes";
+    $SygicUrl = "com.sygic.aura://coordinate|{$lon}|{$lat}|drive";
 
 
 
@@ -69,7 +70,7 @@ if (isset($_GET['easting']) && isset($_GET['northing'])) {
     echo "Longitude: $lon<br>";
     echo "<a href='$bingUrl' target='_blank'>View on Bing Maps</a><br>";
     echo "<a href='$googleUrl' target='_blank'>View on Google Maps</a><br>";
-    echo "<a href='$wazeUrl' target='_blank'>View on Waze</a>";
+    echo "<a href='$SygicUrl'>Open Sygic and Navigate</a>";
 } else {
     echo "Please provide 'easting' and 'northing' parameters in the URL.";
 }
