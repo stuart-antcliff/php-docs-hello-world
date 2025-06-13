@@ -61,8 +61,9 @@ if (isset($_GET['easting']) && isset($_GET['northing'])) {
     $bingUrl = "https://www.bing.com/maps?rtp=pos.mypos~pos.{$lat}_{$lon}";
     $googleUrl = "https://www.google.com/maps/dir/?api=1&origin=My+Location&destination={$lat},{$lon}";
     $wazeUrl = "https://waze.com/ul?ll={$lat},{$lon}&navigate=yes";
-    $SygicUrl = "com.sygic.aura://coordinate|{$lon}|{$lat}|drive";
-
+ //   $SygicUrl = "com.sygic.aura://coordinate|{$lon}|{$lat}|drive";
+ // following supor from sygic they have suggetsed URL encoding and setting the resolution   
+    $SygicUrl = "com.sygic.aura://coordinate%7C{$lon}%7C{$lat}%7Cdrive&&&-1920x1200";
 
 
 
