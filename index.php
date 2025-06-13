@@ -63,7 +63,7 @@ if (isset($_GET['easting']) && isset($_GET['northing'])) {
     $wazeUrl = "https://waze.com/ul?ll={$lat},{$lon}&navigate=yes";
  //   $SygicUrl = "com.sygic.aura://coordinate|{$lon}|{$lat}|drive";
  // following supor from sygic they have suggetsed URL encoding and setting the resolution   
-    $SygicUrl = "com.sygic.aura://coordinate%7C{$lon}%7C{$lat}%7Cdrive&&&-1920x1200";
+    $SygicUrl = "com.sygic.aura://coordinate%7C{$lon}%7C{$lat}%7Cdrive&&&-r1920x1200";
 
 
 
