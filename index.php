@@ -66,11 +66,11 @@ if (isset($_GET['easting']) && isset($_GET['northing'])) {
     $SygicUrl = "com.sygic.aura://coordinate%7C{$lon}%7C{$lat}%7Cdrive&&&-r1920x1200";
 
 
-    echo "NavLink v1.0";
+    echo "NavLink v1.0<br>";
     echo "Latitude: $lat<br>";
     echo "Longitude: $lon<br>";
-    echo "<a href='$bingUrl' target='_blank'>View on Bing Maps</a><br>";
-    echo "<a href='$googleUrl' target='_blank'>View on Google Maps</a><br>";
+//    echo "<a href='$bingUrl' target='_blank'>View on Bing Maps</a><br>";
+//    echo "<a href='$googleUrl' target='_blank'>View on Google Maps</a><br>";
     echo "<a href='$SygicUrl'>Open Sygic and Navigate</a>";
 } else {
     echo "Please provide 'easting' and 'northing' parameters in the URL.";
