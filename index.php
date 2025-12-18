@@ -51,6 +51,67 @@ function osgb36ToWgs84($easting, $northing) {
     return [rad2deg($lat), rad2deg($lon)];
 }
 
+
+function setW3WWords(float $lat, float $lng, string $apiKey, ?string $language = null, int $timeout = 10): bool
+{
+    // Build base URL
+    $base = 'https://api.what3words.com/v3/convert-to-3wa';
+
+    // Build query parameters
+    $params = [
+        'coordinates' => sprintf('%.8f,%.8f', $lat, $lng),
+        'key'         => $apiKey,
+    ];
+    if (!empty($language)) {
+        $params['language'] = $language;
+    }
+
+    $url = $base . '?' . http_build_query($params);
+
+    // Perform HTTP GET with cURL
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT        => $timeout,
+        CURLOPT_FAILONERROR    => false,   // we’ll check HTTP code ourselves
+    ]);
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlErr  = curl_error($ch);
+    curl_close($ch);
+
+    // Basic transport check
+    if ($response === false) {
+        error_log("What3words request failed: $curlErr");
+        return false;
+    }
+    if ($httpCode !== 200) {
+        error_log("What3words API returned HTTP $httpCode: $response");
+        return false;
+    }
+
+    // Parse JSON
+    $data = json_decode($response, true);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        error_log('What3words JSON decode error: ' . json_last_error_msg());
+        return false;
+    }
+
+    // Extract "words"
+    if (!isset($data['words'])) {
+        // Optionally log API error details (e.g., $data['error']['message'])
+        $msg = isset($data['error']['message']) ? $data['error']['message'] : 'No words field in response';
+        error_log("What3words logical error: $msg");
+        return false;
+    }
+
+    // Set $w3w in the caller's scope
+    $GLOBALS['w3w'] = $data['words'];
+    return true;
+}
+
+
+
 // Get easting and northing from URL
 if (isset($_GET['easting']) && isset($_GET['northing'])) {
     $easting = floatval($_GET['easting']);
@@ -65,6 +126,8 @@ if (isset($_GET['easting']) && isset($_GET['northing'])) {
  // following supor from sygic they have suggetsed URL encoding and setting the resolution   
     $SygicUrl = "com.sygic.aura://coordinate%7C{$lon}%7C{$lat}%7Cdrive&&&-r1920x1200";
 
+    $apiKey = 'SDUO84SS';
+    $ok     = setW3WWords($lat, $lng, $apiKey, 'en');
 
     echo "NavLink v1.0<br>";
     echo "Latitude: $lat<br>";
@@ -72,6 +135,16 @@ if (isset($_GET['easting']) && isset($_GET['northing'])) {
 //    echo "<a href='$bingUrl' target='_blank'>View on Bing Maps</a><br>";
 //    echo "<a href='$googleUrl' target='_blank'>View on Google Maps</a><br>";
     echo "<a href='$SygicUrl'>Open Sygic and Navigate</a>";
+
+
+    if ($ok) {
+    // $w3w is now populated globally
+    echo "What Three Words : '$w3w'";
+    } else {
+       http_response_code(500);
+       echo "Failed to obtain What3words address.";
+    }
+    
 } else {
     echo "Please provide 'easting' and 'northing' parameters in the URL.";
 }
