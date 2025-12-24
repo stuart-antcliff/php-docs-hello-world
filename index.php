@@ -65,6 +65,14 @@ if (isset($_GET['easting']) && isset($_GET['northing'])) {
  // following supor from sygic they have suggetsed URL encoding and setting the resolution   
     $SygicUrl = "com.sygic.aura://coordinate%7C{$lon}%7C{$lat}%7Cdrive&&&-r1920x1200";
 
+echo "<!DOCTYPE html>";
+echo "<html lang='en'>";
+echo "<head>";
+echo "  <title>Opening Sygic...</title>";
+echo "  <meta http-equiv='refresh' content='1; url='$SygicUrl'>";
+echo "</head>";
+echo "<body>";
+
 
     echo "NavLink v1.0<br>";
     echo "Latitude: $lat<br>";
@@ -72,6 +80,10 @@ if (isset($_GET['easting']) && isset($_GET['northing'])) {
 //    echo "<a href='$bingUrl' target='_blank'>View on Bing Maps</a><br>";
 //    echo "<a href='$googleUrl' target='_blank'>View on Google Maps</a><br>";
     echo "<a href='$SygicUrl'>Open Sygic and Navigate</a>";
+
+echo "</body>";
+echo "</html>";
+
 } else {
     echo "Please provide 'easting' and 'northing' parameters in the URL.";
 }
